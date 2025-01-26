@@ -18,14 +18,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    
+    - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-    - name: Install yarn
-      run: npm install --global yarn
-    - run: yarn install
-    - run: yarn build --if-present
-    - run: yarn test
-    
+        cache: 'yarn'  # Cache yarn dependencies
+
+    - name: Install Yarn
+      run: npm install -g yarn  # Install yarn globally if not pre-installed
+
+    - name: Install dependencies
+      run: yarn install  # Install dependencies using Yarn
+
+    - name: Build
+      run: yarn build --if-present  # Build the project
+
+    - name: Run tests
+      run: yarn test  # Run tests using Yarn
+      
