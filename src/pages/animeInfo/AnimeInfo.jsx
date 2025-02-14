@@ -333,7 +333,7 @@ function AnimeInfo({ random = false }) {
       </div>
       <div className="w-full px-4 grid grid-cols-[minmax(0,75%),minmax(0,25%)] gap-x-6 max-[1200px]:flex flex-col">
         <div>
-          {seasons.length > 0 && (
+          {seasons?.length > 0 && (
             <div className="flex flex-col gap-y-7 mt-8">
               <h1 className="w-fit text-2xl text-[#ffbade] max-[478px]:text-[18px] font-bold">
                 More Seasons
