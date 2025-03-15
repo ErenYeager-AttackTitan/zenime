@@ -72,9 +72,9 @@ function Navbar() {
               to="/"
               className="text-4xl font-bold max-[575px]:text-3xl cursor-pointer"
             >
-              {logoTitle.slice(0, 3)}
+              {logoTitle.slice(0, 6)}
               <span className="text-[#FFBADE]">{logoTitle.slice(5, 6)}</span>
-              {logoTitle.slice(4)}
+              {logoTitle.slice(6)}
             </Link>
           </div>
           <WebSearch />
