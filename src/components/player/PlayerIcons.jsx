@@ -57,7 +57,7 @@ const fullScreenOffIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 
 const logo = `<p style="display: flex; gap: 7px; align-items: center; background-color:#1F2020; padding:5px;padding-inline:7px; border-radius:5px">
     <b style="color: #ffbade;">Powered by</b>
     <span style="font-size: 14px;">
-        Zen<span style="color: #ffbade;">!</span>me
+        Anime<span style="color: #ffbade;">Z</span>ia
     </span>
 </p>
 `;
