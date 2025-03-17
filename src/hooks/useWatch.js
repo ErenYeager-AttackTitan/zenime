@@ -27,14 +27,14 @@ export const useWatch = (animeId, initialEpisodeId) => {
   const [serverLoading, setServerLoading] = useState(true);
   const [nextEpisodeSchedule, setNextEpisodeSchedule] = useState(null);
   const isServerFetchInProgress = useRef(false);
+  const isStreamFetchInProgress = useRef(false);
 
-  // Reset all states when animeId changes
   useEffect(() => {
     setEpisodes(null);
-    setEpisodeId(null); // Reset episodeId immediately to null
+    setEpisodeId(null);
     setActiveEpisodeNum(null);
-    setServers(null); // Clear servers to prevent premature stream fetch
-    setActiveServerId(null); // Clear activeServerId
+    setServers(null);
+    setActiveServerId(null);
     setStreamInfo(null);
     setStreamUrl(null);
     setSubtitles([]);
@@ -48,25 +48,23 @@ export const useWatch = (animeId, initialEpisodeId) => {
     setSeasons(null);
     setTotalEpisodes(null);
     setAnimeInfoLoading(true);
+    isServerFetchInProgress.current = false;
+    isStreamFetchInProgress.current = false; // Reset stream fetch guard
   }, [animeId]);
 
   // Fetch anime info and episodes, then set episodeId
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        // Fetch anime info and episodes concurrently
+        setAnimeInfoLoading(true);
         const [animeData, episodesData] = await Promise.all([
           getAnimeInfo(animeId, false),
           getEpisodes(animeId),
         ]);
-
         setAnimeInfo(animeData?.data);
         setSeasons(animeData?.seasons);
-
         setEpisodes(episodesData?.episodes);
         setTotalEpisodes(episodesData?.totalEpisodes);
-
-        // Set episodeId: prioritize initialEpisodeId, fallback to first episode
         const newEpisodeId =
           initialEpisodeId ||
           (episodesData?.episodes?.length > 0
@@ -80,9 +78,8 @@ export const useWatch = (animeId, initialEpisodeId) => {
         setAnimeInfoLoading(false);
       }
     };
-
     fetchInitialData();
-  }, [animeId, initialEpisodeId]);
+  }, [animeId]); // Only depend on animeId
 
   // Fetch next episode schedule
   useEffect(() => {
@@ -165,11 +162,13 @@ export const useWatch = (animeId, initialEpisodeId) => {
       !episodeId ||
       !activeServerId ||
       !servers ||
-      isServerFetchInProgress.current
+      isServerFetchInProgress.current ||
+      isStreamFetchInProgress.current
     )
       return;
 
     const fetchStreamInfo = async () => {
+      isStreamFetchInProgress.current = true;
       setBuffering(true);
       try {
         const server = servers.find((srv) => srv.data_id === activeServerId);
@@ -201,10 +200,11 @@ export const useWatch = (animeId, initialEpisodeId) => {
         setError(err.message || "An error occurred.");
       } finally {
         setBuffering(false);
+        isStreamFetchInProgress.current = false;
       }
     };
     fetchStreamInfo();
-  }, [episodeId, activeServerId, servers]); // Removed animeId from dependencies
+  }, [episodeId, activeServerId, servers]);
 
   return {
     error,
