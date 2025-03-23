@@ -60,7 +60,7 @@ export default function Player({
 }) {
   const artRef = useRef(null);
   const proxy = import.meta.env.VITE_PROXY_URL;
-  const m3u8proxy = import.meta.env.VITE_M3U8_PROXY_URL?.split(",") || [];
+  const m3u8proxy = "https://m3u8-chi.vercel.app/m3u8-proxy?url=";
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(
     episodes?.findIndex(
       (episode) => episode.id.match(/ep=(\d+)/)?.[1] === episodeId
