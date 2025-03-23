@@ -59,7 +59,7 @@ export default function Player({
   streamInfo,
 }) {
   const artRef = useRef(null);
-  const proxy = import.meta.env.VITE_PROXY_URL;
+  const proxy = "https://m3u8-chi.vercel.app/?url=";
   const m3u8proxy = "https://m3u8-chi.vercel.app/m3u8-proxy?url=";
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(
     episodes?.findIndex(
